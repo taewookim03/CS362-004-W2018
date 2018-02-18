@@ -643,7 +643,8 @@ int getCost(int cardNumber)
   return -1;
 }
 
-int playAdventurer(int* drawntreasure, struct gameState* state, int currentPlayer, int* temphand) {
+int playAdventurer(struct gameState* state, int currentPlayer, int* temphand) {
+	int drawntreasure = 0;
 	int z = 0;// this is the counter for the temp hand
 	while(drawntreasure<=2){
 		if (state->deckCount[currentPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
@@ -651,6 +652,7 @@ int playAdventurer(int* drawntreasure, struct gameState* state, int currentPlaye
 		}
 		drawCard(currentPlayer, state);
 		int cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];//top card of hand is most recently drawn card.
+		
 		if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
 			drawntreasure++;
 		else{
@@ -664,7 +666,6 @@ int playAdventurer(int* drawntreasure, struct gameState* state, int currentPlaye
 		state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn
 		z=z-1;
     }
-    
 	return 0;
 }
 
@@ -738,7 +739,6 @@ int playSmithy(struct gameState* state, int currentPlayer, int handPos) {
 	{
 	  drawCard(currentPlayer, state);
 	}
-
       //discard card from hand
       discardCard(handPos, currentPlayer, state, 0);
       return 0;
@@ -779,7 +779,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
   switch( card ) 
     {
     case adventurer:
-      return playAdventurer(&drawntreasure, &state, currentPlayer, &temphand);
+      return playAdventurer(&state, currentPlayer, &temphand);
 			
     case council_room:
       return playCouncilRoom(&state, currentPlayer, handPos);
@@ -1249,7 +1249,6 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
 int discardCard(int handPos, int currentPlayer, struct gameState *state, int trashFlag)
 {
-	
   //if card is not trashed, added to Played pile 
   if (trashFlag < 1)
     {
@@ -1257,10 +1256,8 @@ int discardCard(int handPos, int currentPlayer, struct gameState *state, int tra
       state->playedCards[state->playedCardCount] = state->hand[currentPlayer][handPos]; 
       state->playedCardCount++;
     }
-	
   //set played card to -1
   state->hand[currentPlayer][handPos] = -1;
-	
   //remove card from player's hand
   if ( handPos == (state->handCount[currentPlayer] - 1) ) 	//last card in hand array is played
     {
