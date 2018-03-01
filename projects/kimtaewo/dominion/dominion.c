@@ -399,7 +399,7 @@ int isGameOver(struct gameState *state) {
 
   //if three supply pile are at 0, the game ends
   j = 0;
-  for (i = 0; i < 25; i++)
+  for (i = 0; i < 27; i++)
     {
       if (state->supplyCount[i] == 0)
 	{
@@ -646,7 +646,7 @@ int getCost(int cardNumber)
 int playAdventurer(struct gameState* state, int currentPlayer, int* temphand) {
 	int drawntreasure = 0;
 	int z = 0;// this is the counter for the temp hand
-	while(drawntreasure<=2){
+	while(drawntreasure<2){
 		if (state->deckCount[currentPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
 			shuffle(currentPlayer, state);
 		}
@@ -698,7 +698,7 @@ int playCouncilRoom(struct gameState* state, int currentPlayer, int handPos) {
 int playMine(struct gameState* state, int currentPlayer, int choice1, int choice2, int choice3, int handPos) {
 	int j = state->hand[currentPlayer][choice1];  //store card we will trash
 
-      if (state->hand[currentPlayer][choice1] < silver || state->hand[currentPlayer][choice1] > gold)
+      if (state->hand[currentPlayer][choice1] < copper || state->hand[currentPlayer][choice1] > gold)
 	{
 	  return -1;
 	}
@@ -735,7 +735,7 @@ int playMine(struct gameState* state, int currentPlayer, int choice1, int choice
 int playSmithy(struct gameState* state, int currentPlayer, int handPos) {
 	//+3 Cards
 	int i;
-      for (i = 0; i <= 3; i++)
+      for (i = 0; i < 3; i++)
 	{
 	  drawCard(currentPlayer, state);
 	}
