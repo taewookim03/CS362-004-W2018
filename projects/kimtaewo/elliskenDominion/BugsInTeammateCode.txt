@@ -1,0 +1,16 @@
+Bug #1: Smithy card effect function (cardSmithy)
+Output when failed (from unit test, cardtest1):
+
+Expected hand size = 7, actual hand size = 8
+
+Test failed because the actual hand size after playing the card was higher than expected.
+After inspecting the cardSmithy function, a bug was found in the first for loop where the card draws 4 cards instead of just 3, which explains why the actual hand size is 1 more than expected. 
+
+
+Bug #2: Adventurer card effect function (cardAdventurer)
+Output when failed (from random testing, randomtestadventurer):
+
+Random Testing adventurer
+randomtestadventurer: randomtestadventurer.c:24: checkPlayAdventurer: Assertion `G->handCount[p] == h + 1' failed.
+
+The random testing failed because the actual hand count did not match the expected count of 1 higher than prior to playing the card (+2 treasures, discard adventurer, net +1). After inspecting the cardAdventurer card, it seems that the bug is due to the conditional statement for checking for treasure (line 671 of dominion.c). It only checks for gold treasure cards and not copper or silver. 
